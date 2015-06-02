@@ -3,7 +3,7 @@ Chromiumembedded[CEF] demo
 
 这是 CEF的一部分例子...
 
-#####  配置环境：  
+###  配置环境：  
 1.   cef配置  
     1.1 CEF版本是[cef_binary_3.2171.1979_windows64](http://www.magpcss.net/cef_downloads/index.php?file=cef_binary_3.2171.1979_windows64.7z)  
     1.2 导入"\library\cef\include_cef.h"或者直接使用"src\include_XCef.h"包含全部xcef+cef内容  
@@ -21,7 +21,7 @@ include eg:
     #include "..\src\include_XCef.h"  
 ```  
 
-##### 关于XCefCallback
+### 关于XCefCallback
 XCefCallback 统一了同步回调和cefQuery  
 cpp eg:  
 ```cpp
@@ -81,6 +81,10 @@ var request_id = jsonrpcQuery("async_xx", [1, "abc", 132], function(response) {}
 ###### XWinCallback文件补充：  
 drag系列函数没有实现，一时没有什么好的办法  
 native_thread_callback和相关js{JSHandle.html文件}，实现一个开启cpp thread，分段处理数据并回调js的例子  
+
+###### CefWin64补充:  
+CefWin64调试默认开启了离屏渲染(off-screen),背景被opengl托管了。。。  
+
 
 
 收工:)

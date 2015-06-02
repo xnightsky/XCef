@@ -68,7 +68,7 @@ END_XV8()
 // 在main函数中在cef之前把XXXCallback托管给管理类
 XCefAppManagePtr mng = XCefAppManage::Instance();
 // 注册事件
-mng->RigisterCallback(new XWinCallback);
+mng->RigisterCallback(new XXXCallback);
 ```
 js eg:
 ```javascript

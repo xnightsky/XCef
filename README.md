@@ -64,7 +64,12 @@ BEGIN_XV8(XXXCallback)
 		HANDLE_XV8_CB_ASYNC("async_xx", XXXCallback::async_xx)
 END_XV8()
 ```
-
+```cpp
+// 在main函数中在cef之前把XXXCallback托管给管理类
+XCefAppManagePtr mng = XCefAppManage::Instance();
+// 注册事件
+mng->RigisterCallback(new XWinCallback);
+```
 js eg:
 ```javascript
 // \resources\JSHandle.html文件

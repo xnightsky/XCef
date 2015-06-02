@@ -1,0 +1,46 @@
+<html>
+<head>
+
+
+<script type="text/javascript">
+
+
+function onMessageChanged()
+{
+	app.UpdateString(document.getElementById("message").value);
+}
+
+function onReverseMsg(msg)
+{
+    document.getElementById("reverse_msg").value = msg;
+}
+
+function initApp()
+{
+	app.setCallback(onReverseMsg);
+}
+
+function TestApp()
+{
+	// flash未启用
+    //window.open ('http://163.com', 'newwindow',"height=200,width=300,left=1365");
+}
+
+initApp();
+
+</script>
+</head>
+
+<body>
+
+Input Content:<br />
+<input type="text" id="message" value="1234567890" oninput="javascript:onMessageChanged()"/> <br /><br />
+
+Reversed Content is: 
+<input type="text" id="reverse_msg" value="" /> <br />
+
+<input type="button" onclick="TestApp();" value="Test App"/>
+
+</body>
+
+</html>

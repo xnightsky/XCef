@@ -229,3 +229,13 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# XCef
+# =========================
+__*
+# Library
+library/cef/lib64/Debug/*
+library/cef/lib64/Release/*
+library/cef/bin64/Debug/*
+library/cef/bin64/Release/*
+

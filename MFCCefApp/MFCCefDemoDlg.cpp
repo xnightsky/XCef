@@ -241,7 +241,6 @@ void CMFCCefDemoDlg::_LayoutRectCefControl(CRect & rc)
 		{
 			CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
 
-			_LayoutRectCefControl(rc);
 			// ::SetWindowPos(hwnd, HWND_TOP, 0, 0, cx, cy, SWP_NOZORDER);  
 			::MoveWindow(hwnd, rc.left, rc.top, rc.Width(), rc.Height(), TRUE);
 		}

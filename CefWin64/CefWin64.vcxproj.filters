@@ -30,15 +30,6 @@
     <ClInclude Include="..\XCef\include_XCef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\XCefAppManage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\XCefCallback.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\XWinCallback.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\library\cJSON\cJSON.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -46,12 +37,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\library\cJSON\XcJSON.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\XCefRpc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\XCefInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\library\cef\include_stl.h">
@@ -63,37 +48,61 @@
     <ClInclude Include="..\WtlCefApp\win\mainfrm.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\client_app.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\client_renderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\XCef\client_handler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\library\cef\include_cef.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\client_resource.h">
+    <ClInclude Include="..\src\bytes_write_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\XWinUtil.h">
+    <ClInclude Include="..\src\cefclient_osr_dragdrop_win.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\resource_util.h">
+    <ClInclude Include="..\src\cefclient_osr_widget_win.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\string_util.h">
+    <ClInclude Include="..\src\client_app.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\client_switches.h">
+    <ClInclude Include="..\src\client_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\cefclient_osr_widget_win.h">
+    <ClInclude Include="..\src\client_renderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\osrenderer.h">
+    <ClInclude Include="..\src\client_resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client_switches.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\include_wrapper_cef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\include_XCef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\osrenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resource_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\string_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XCefAppManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XCefCallback.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XCefInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XCefRpc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XWinCallback.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,58 +113,64 @@
     <ClCompile Include="CefWin64.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\XCef\XCefAppManage.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\XCefCallback.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\XWinCallback.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\library\cJSON\XcJSON.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\XCefRpc.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\XCefInfo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_app.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_app_delegates.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_renderer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_handler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_handler_win.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\XWinUtil.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\resource_util_win.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\string_util.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XCef\client_switches.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\library\cJSON\cJSON.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\XCef\cefclient_osr_widget_win.cpp">
+    <ClCompile Include="..\src\bytes_write_handler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\XCef\osrenderer.cpp">
+    <ClCompile Include="..\src\cefclient_osr_dragdrop_win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cefclient_osr_widget_win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_app.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_app_delegates.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_handler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_handler_win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_renderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client_switches.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\osrenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\resource_util_win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\string_util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XCefAppManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XCefCallback.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XCefInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XCefRpc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XWinCallback.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\XWinUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

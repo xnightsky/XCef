@@ -84,12 +84,26 @@ var request_id = jsonrpcQuery("async_xx", [1, "abc", 132], function(response) {}
 ```
 
 ###### XWinCallback文件补充：  
-drag系列函数没有实现，一时没有什么好的办法  
+~~drag系列函数没有实现，一时没有什么好的办法~~  
+drap功能 - 感谢 @寒夜孤星
+```javascript
+(function(){
+	container = document.getElementById("container");
+	function set_title_areas(){
+		app.set_title_areas(container.clientWidth, container.clientHeight)
+	}
+	window.onresize = set_title_areas;
+	set_title_areas();
+})();
+```
 native_thread_callback和相关js{JSHandle.html文件}，实现一个开启cpp thread，分段处理数据并回调js的例子  
 
 ###### CefWin64补充:  
-CefWin64调试默认开启了离屏渲染(off-screen),背景被opengl托管了。。。  
-
+~~CefWin64调试默认开启了离屏渲染(off-screen),背景被opengl托管了~~  
+```javascript
+XManifestUtil::Instance().EnableOffScreenRendering();
+```
+以上函数开启了离屏渲染，已关闭
 
 
 收工:)

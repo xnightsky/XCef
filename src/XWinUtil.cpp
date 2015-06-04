@@ -116,7 +116,7 @@ namespace XWinUtil
 	}
 	/*extern*/ void				SetTitleAreas(WPARAM wParam, LPARAM lParam, __out WinInfo & info)
 	{
-		info.title_x_ = (int)(wParam);
-		info.title_y_ = (int)(lParam);
+		info.x_ = (int)(wParam);
+		info.y_ = (int)(lParam);
 	}
 }

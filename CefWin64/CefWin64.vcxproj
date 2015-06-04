@@ -167,9 +167,9 @@
     <ClInclude Include="..\src\XCefInfo.h" />
     <ClInclude Include="..\src\XCefRpc.h" />
     <ClInclude Include="..\src\XWinCallback.h" />
+    <ClInclude Include="..\src\XWinUtil.h" />
     <ClInclude Include="..\WtlCefApp\win\AtlOpengl.h" />
     <ClInclude Include="..\WtlCefApp\win\mainfrm.h" />
-    <ClInclude Include="..\XCef\include_XCef.h" />
     <ClInclude Include="CefWin64.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

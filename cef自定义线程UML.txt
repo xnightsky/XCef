@@ -1,0 +1,52 @@
+// result_path - 结果json数据路径
+function cb_data_load(result_path)
+{
+	loader1.load( 
+		path, 
+		function ( object ) {
+			object.scale.multiplyScalar( 0.2 );
+			scene.add( object );
+		}, 
+		onProgress, 
+		onError 
+		);
+}                
+// up3 路径
+function load_file(file, cb){ 。。。。}
+
+// C++
+// load_file 在C++中映射的函数就是cpp_cb_data_load 
+void cpp_cb_data_load(...)
+
+// C++ 回调通知
+void cpp_notify_loaded(v8, path)
+{
+	v8->Enter();
+    v8->ExecuteFunction("cb_data_load", path);
+	v8->Exit();
+}
+
+
+
+ js内          V8循环（V8 C++ 回调）     C++自定义线程
+ load_file
+           ->  cpp_cb_data_load 
+                          beginthread ->  自定义线程处理数据
+                          					cpp_cb_data_load
+           <-    消息返回，让UI不拥堵
+ js继续响应其他操作
+ 										   C++处理完毕
+ 			CefPostTake(TID_RENDER, NewMethodXXX(cpp_notify_loaded, v8, path))
+ 				v8循环内捕获到task
+ 				执行task回调
+ 				cpp_notify_loaded
+ 			<- 回调中执行cb_data_load函数
+ js前台被响应
+ cb_data_load被调用
+ cb_data_load开始调用three处理数据
+
+
+
+
+
+

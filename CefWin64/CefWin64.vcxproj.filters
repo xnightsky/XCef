@@ -27,9 +27,6 @@
     <ClInclude Include="CefWin64.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\XCef\include_XCef.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\library\cJSON\cJSON.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -103,6 +100,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\src\XWinCallback.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\XWinUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

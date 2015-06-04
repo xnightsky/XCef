@@ -350,7 +350,9 @@ void XCefAppManage::InitCefSettings(__out CefSettings& settings) {
 	CefString(&settings.cache_path) = command_line_->GetSwitchValue(cefclient::kCachePath);
 
 	// --off-screen-rendering-enabled
-	if (command_line_->HasSwitch(cefclient::kOffScreenRenderingEnabled))
+	if (command_line_->HasSwitch(cefclient::kOffScreenRenderingEnabled) 
+		|| XManifestUtil::Instance().browser.is_off_screen_rendering_
+		)
 		settings.windowless_rendering_enabled = true;
 
 	//// 解决——[0418/193102:FATAL:resource_bundle.cc(507)] Check failed: false. unable to find resource: 28023
@@ -493,7 +495,7 @@ void							XCefAppManage::CreateBrowser(HWND hwnd_parent)
 			NULL
 			);
 		HWND hwnd_browser = browser->GetHost()->GetWindowHandle();
-		HWND hwnd_host = cef_setting.multi_threaded_message_loop ? hwnd_parent : hwnd_browser;
+		//HWND hwnd_host = cef_setting.multi_threaded_message_loop ? hwnd_parent : hwnd_browser;
 
 		if (!str_html.empty())
 		{
@@ -501,12 +503,12 @@ void							XCefAppManage::CreateBrowser(HWND hwnd_parent)
 		}
 		if (is_win32less)
 		{
-			XWinUtil::SetWin32Less(hwnd_host);
+			XWinUtil::SetWin32Less(/*hwnd_host*/hwnd_parent);
 		}
-// 		if (is_maximize)
-// 		{
-// 			XWinUtil::Maximize(hwnd_top);
-// 		}
+ 		if (is_maximize)
+ 		{
+			XWinUtil::Maximize(/*hwnd_host*/hwnd_parent);
+ 		}
 	}
 }
 
@@ -526,8 +528,7 @@ void XCefAppManage::QuitMessageLoop() {
 
 bool							XCefAppManage::IsOffScreenRenderingEnabled()
 {
-	// 强制开启
-	return true;
+	return XManifestUtil::Instance().browser.is_off_screen_rendering_;
 }
 
 
@@ -629,6 +630,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		case WM_DESTROY:
 			// Quitting CEF is handled in ClientHandler::OnBeforeClose().
+			XWinHookHandle::UnHook(hWnd);
 			return 0;
 		case WM_PAINT:
 			hdc = BeginPaint(hWnd, &ps);
@@ -697,41 +699,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				CefSetOSModalLoop(false);
 			}
 			break;
-		case WM_NCHITTEST:
-		{
-// 			RECT rect;
-// 			GetWindowRect(hWnd, &rect);
-// 			int x = GET_X_LPARAM(lParam);
-// 			int y = GET_Y_LPARAM(lParam);
-// 			POINT pt = { x, y };
-// 			POINT title = { win_info.title_x_, win_info.title_y_ };
-// 
-// 			//if (title.x == -1 || title.y == -1)
-// 			if ((pt.x <= title.x && pt.y <= title.y) || HTCAPTION == wParam)
-// 			{
-// 				::OutputDebugStringA("XCef - HTCAPTION\r\n");
-// 				//SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-// 				return HTCAPTION;
-// 			}
-			POINT pt;
-			pt.x = GET_X_LPARAM(lParam);
-			pt.y = GET_Y_LPARAM(lParam);
-			::ScreenToClient(hWnd, &pt);
-
-			RECT rcClient;
-			::GetClientRect(hWnd, &rcClient);
-
-			if (pt.x < rcClient.left + 200 && pt.y<rcClient.top + 300) 
-			{
-				return HTCAPTION;
-			}
-			break;
-		}
-//		case WM_NCLBUTTONDOWN:
-//			::OutputDebugStringA("XCef - WM_NCLBUTTONDOWN\r\n");
-//			break;
 		case XWM_SET_TITTLE_AREAS:
-			SetTitleAreas(wParam, lParam, XWinUtil::GetWinInfo());
+			//SetTitleAreas(wParam, lParam, XWinUtil::GetWinInfo());
+			if(client->GetBrowser()) {
+				// Retrieve the window handle (parent window with off-screen rendering).
+				CefWindowHandle hwnd = client->GetBrowser()->GetHost()->GetWindowHandle();
+				XWinHookHandle::SetHook(hwnd, wParam, lParam);
+			}
+
 			return 0;
 		}
 	} while (0);

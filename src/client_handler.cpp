@@ -404,22 +404,22 @@ void ClientHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
   if (mouse_cursor_change_disabled_)
     browser->GetHost()->SetMouseCursorChangeDisabled(true);
 
-  if (!GetBrowser())   {
-    base::AutoLock lock_scope(lock_);
-    // We need to keep the main child window, but not popup windows
-    browser_ = browser;
-    browser_id_ = browser->GetIdentifier();
-  } else if (browser->IsPopup()) {
-    // Add to the list of popup browsers.
-    popup_browsers_.push_back(browser);
+	if (!GetBrowser())   {
+		base::AutoLock lock_scope(lock_);
+		// We need to keep the main child window, but not popup windows
+		browser_ = browser;
+		browser_id_ = browser->GetIdentifier();
+	} else if (browser->IsPopup()) {
+	// Add to the list of popup browsers.
+	popup_browsers_.push_back(browser);
 
-    // Give focus to the popup browser. Perform asynchronously because the
-    // parent window may attempt to keep focus after launching the popup.
-    CefPostTask(TID_UI,
-        base::Bind(&CefBrowserHost::SetFocus, browser->GetHost().get(), true));
-  }
+	// Give focus to the popup browser. Perform asynchronously because the
+	// parent window may attempt to keep focus after launching the popup.
+	CefPostTask(TID_UI,
+		base::Bind(&CefBrowserHost::SetFocus, browser->GetHost().get(), true));
+	}
 
-  browser_count_++;
+	browser_count_++;
 }
 
 bool ClientHandler::DoClose(CefRefPtr<CefBrowser> browser) {

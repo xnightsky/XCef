@@ -13,6 +13,8 @@ struct XManifestUtil{
 		// html ◊÷∑˚¥Æ
 		CefString					str_html_;
 		CefString					str_url_;
+		// ¿Î∆¡‰÷»æ
+		bool						is_off_screen_rendering_;
 	}browser;
 
 	struct
@@ -36,6 +38,7 @@ struct XManifestUtil{
 	void			Clear()
 	{
 		browser.is_url_or_html_ = true;
+		browser.is_off_screen_rendering_ = false;
 
 		window.has_host_hwnd_ = false;
 		window.win32less_ = false/*true*/;
@@ -55,6 +58,11 @@ struct XManifestUtil{
 		browser.str_url_ = url;
 		browser.str_html_.clear();
 	}
+	void			EnableOffScreenRendering()
+	{
+		browser.is_off_screen_rendering_ = true;
+	}
+
 	void			SetWin32less()
 	{
 		window.win32less_ = true;

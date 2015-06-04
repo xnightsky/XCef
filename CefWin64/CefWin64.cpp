@@ -17,6 +17,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	XCefAppManagePtr mng = XCefAppManage::Instance();
 	{
 		// Manage配置写在这里，每个进程都会加载
+		//XManifestUtil::Instance().EnableOffScreenRendering();
 
 		// 注册事件
 		mng->RigisterCallback(new XWinCallback);
@@ -27,7 +28,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 // 		XManifestUtil::Instance().LoadHtml(
 //  			CefString("<script type='text/javascript'>alert('111');</script>")
 //  			);
-		//XManifestUtil::Instance().SetWin32less();
+		XManifestUtil::Instance().SetWin32less();
 		//XManifestUtil::Instance().Maximize();
 	}
 	int exit_code = mng->RunSingle(hInstance);

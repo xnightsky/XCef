@@ -6,7 +6,7 @@
 BEGIN_XV8(XWinCallback)
 	HANDLE_XV8_CB("title", XWinCallback::title)
 	HANDLE_XV8_CB("cache_hwnd", XWinCallback::cache_hwnd)
-	HANDLE_XV8_CB("drag_window", XWinCallback::drag_window)
+//	HANDLE_XV8_CB("drag_window", XWinCallback::drag_window)
 	HANDLE_XV8_CB("native_thread_callback", XWinCallback::native_thread_callback)
 
 	HANDLE_XV8_CB("set_title_areas", XWinCallback::set_title_areas)
@@ -16,7 +16,7 @@ BEGIN_XV8(XWinCallback)
 	FORWARD_XV8_PROTOCOL_APP()
 		HANDLE_XV8_CB_ASYNC("async_title", XWinCallback::async_title)
 		HANDLE_XV8_CB_ASYNC("async_get_hwnd", XWinCallback::async_get_hwnd)
-		HANDLE_XV8_CB_ASYNC("async_drag_window", XWinCallback::async_drag_window)
+//		HANDLE_XV8_CB_ASYNC("async_drag_window", XWinCallback::async_drag_window)
 END_XV8()
 
 
@@ -103,13 +103,13 @@ public:
 
 	void	V8AddRef()
 	{
-		context_->AddRef();
-		callback_->AddRef();
+// 		context_->AddRef();
+// 		callback_->AddRef();
 	}
 	void	V8Release()
 	{
-		context_->Release();
-		callback_->Release();
+// 		context_->Release();
+// 		callback_->Release();
 	}
 
 	// 执行 C++ 回调，必须在render thread中
@@ -284,102 +284,102 @@ public:
 	return true;
 }
 
-/*static*/ bool XWinCallback::drag_window(
-	XCefV8Handler *				pthis_handle,
-	CefRefPtr<CefV8Value>		object,
-	const CefV8ValueList &		arguments,
-	CefRefPtr<CefV8Value> &		retval,
-	CefString &					exception
-	)
-{
-	CefWindowHandle hwnd = pthis_handle->GetCCWindowHandle();
-
-	//assert(0);
-	if (NULL == hwnd)
-	{
-		retval = CefV8Value::CreateObject(NULL);
-		retval->SetValue("result", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);
-		retval->SetValue("message", CefV8Value::CreateString("Can not get hwnd!"), V8_PROPERTY_ATTRIBUTE_NONE);
-		return false;
-	}
-	if (arguments.size() < 2){
-		retval = CefV8Value::CreateObject(NULL);
-		retval->SetValue("result", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);
-		retval->SetValue("message", CefV8Value::CreateString("Invalid function arguements!"), V8_PROPERTY_ATTRIBUTE_NONE);
-		//retval = CefV8Value::CreateBool(false);
-		return false;
-	}
-
- 	
-	int x = arguments[0]->GetIntValue();
-	int y = arguments[1]->GetIntValue();
-
-
-	static POINT ptLast = { -1, -1 };
-	POINT ptCurrent = { x, y };
-
-	if (
-		(ptLast.x > 0 || ptLast.y > 0) 
-		&& (x >= 0 && y >= 0)
-		)
-	{
-		int xoffset = ptLast.x - x;
-		int yoffset = ptLast.y - y;
-
-		RECT rt = { 0 };
-		GetWindowRect(hwnd, &rt);
-		POINT ptTo = { rt.left - xoffset, rt.top - yoffset };
-		::SetWindowPos(hwnd, NULL, ptTo.x, ptTo.y, 0, 0, SWP_NOSIZE);
-		//::MoveWindow(hwnd, ptTo.x, ptTo.y, rt.right - rt.left, rt.bottom - rt.top, FALSE);
-		
-		OutputDebugStringA(
-			xstd::format("pos: (%d, %d), offset(%d, %d)\r\n", rt.left, rt.top, xoffset, yoffset).c_str()
-			);
-	}
-	ptLast.x = x;
-	ptLast.y = y;
-
-	
-// 	RECT rt = { 0 };
-// 	GetWindowRect(hwnd, &rt);
-// 	x += rt.left;
-// 	y += rt.top;
-
-//	::PostMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
-	//
-// 	::SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(x, y));
-// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
-	//
-// 	::SendMessage(hwnd, WM_LBUTTONDOWN, HTCAPTION, MAKELPARAM(x, y));
-// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
-	//
-// 	SetWindowPos(hwnd, NULL, x, y, 0, 0, SWP_NOSIZE);
-// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
-	
-
-	retval = CefV8Value::CreateBool(true);
-	return true;
-}
-
-/*static*/ bool XWinCallback::async_drag_window(
-	XAsyncBrowserHandler *			pthis_handle,
-	CefRefPtr<CefBrowser>			browser,
-	CefRefPtr<CefFrame>				frame,
-	int64							query_id,
-	const CefString &				request,
-	bool							persistent,
-	CefRefPtr<BrowserCallback>		callback,
-	XRPC_INFO &						rpc_info
-	)
-{
-	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
-	//::PostMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
-	::SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
-
-
-	callback->Success(XCefRpc::GetResult(XPROT_WIN(), true, rpc_info.id));
-	return true;
-}
+///*static*/ bool XWinCallback::drag_window(
+//	XCefV8Handler *				pthis_handle,
+//	CefRefPtr<CefV8Value>		object,
+//	const CefV8ValueList &		arguments,
+//	CefRefPtr<CefV8Value> &		retval,
+//	CefString &					exception
+//	)
+//{
+//	CefWindowHandle hwnd = pthis_handle->GetCCWindowHandle();
+//
+//	//assert(0);
+//	if (NULL == hwnd)
+//	{
+//		retval = CefV8Value::CreateObject(NULL);
+//		retval->SetValue("result", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);
+//		retval->SetValue("message", CefV8Value::CreateString("Can not get hwnd!"), V8_PROPERTY_ATTRIBUTE_NONE);
+//		return false;
+//	}
+//	if (arguments.size() < 2){
+//		retval = CefV8Value::CreateObject(NULL);
+//		retval->SetValue("result", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);
+//		retval->SetValue("message", CefV8Value::CreateString("Invalid function arguements!"), V8_PROPERTY_ATTRIBUTE_NONE);
+//		//retval = CefV8Value::CreateBool(false);
+//		return false;
+//	}
+//
+// 	
+//	int x = arguments[0]->GetIntValue();
+//	int y = arguments[1]->GetIntValue();
+//
+//
+//	static POINT ptLast = { -1, -1 };
+//	POINT ptCurrent = { x, y };
+//
+//	if (
+//		(ptLast.x > 0 || ptLast.y > 0) 
+//		&& (x >= 0 && y >= 0)
+//		)
+//	{
+//		int xoffset = ptLast.x - x;
+//		int yoffset = ptLast.y - y;
+//
+//		RECT rt = { 0 };
+//		GetWindowRect(hwnd, &rt);
+//		POINT ptTo = { rt.left - xoffset, rt.top - yoffset };
+//		::SetWindowPos(hwnd, NULL, ptTo.x, ptTo.y, 0, 0, SWP_NOSIZE);
+//		//::MoveWindow(hwnd, ptTo.x, ptTo.y, rt.right - rt.left, rt.bottom - rt.top, FALSE);
+//		
+//		OutputDebugStringA(
+//			xstd::format("pos: (%d, %d), offset(%d, %d)\r\n", rt.left, rt.top, xoffset, yoffset).c_str()
+//			);
+//	}
+//	ptLast.x = x;
+//	ptLast.y = y;
+//
+//	
+//// 	RECT rt = { 0 };
+//// 	GetWindowRect(hwnd, &rt);
+//// 	x += rt.left;
+//// 	y += rt.top;
+//
+////	::PostMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
+//	//
+//// 	::SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(x, y));
+//// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
+//	//
+//// 	::SendMessage(hwnd, WM_LBUTTONDOWN, HTCAPTION, MAKELPARAM(x, y));
+//// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
+//	//
+//// 	SetWindowPos(hwnd, NULL, x, y, 0, 0, SWP_NOSIZE);
+//// 	::SendMessage(hwnd, WM_LBUTTONUP, NULL, NULL);
+//	
+//
+//	retval = CefV8Value::CreateBool(true);
+//	return true;
+//}
+//
+///*static*/ bool XWinCallback::async_drag_window(
+//	XAsyncBrowserHandler *			pthis_handle,
+//	CefRefPtr<CefBrowser>			browser,
+//	CefRefPtr<CefFrame>				frame,
+//	int64							query_id,
+//	const CefString &				request,
+//	bool							persistent,
+//	CefRefPtr<BrowserCallback>		callback,
+//	XRPC_INFO &						rpc_info
+//	)
+//{
+//	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
+//	//::PostMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
+//	::SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
+//
+//
+//	callback->Success(XCefRpc::GetResult(XPROT_WIN(), true, rpc_info.id));
+//	return true;
+//}
 
 
 

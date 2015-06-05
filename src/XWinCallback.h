@@ -54,25 +54,6 @@ public:
 		CefRefPtr<CefV8Value> &		retval,
 		CefString &					exception
 		);
-	//// error
-	//static bool drag_window(
-	//	XCefV8Handler *				pthis_handle,
-	//	CefRefPtr<CefV8Value>		object,
-	//	const CefV8ValueList &		arguments,
-	//	CefRefPtr<CefV8Value> &		retval,
-	//	CefString &					exception
-	//	);
-	//// error
-	//static bool async_drag_window(
-	//	XAsyncBrowserHandler *			pthis_handle,
-	//	CefRefPtr<CefBrowser>			browser,
-	//	CefRefPtr<CefFrame>				frame,
-	//	int64							query_id,
-	//	const CefString &				request,
-	//	bool							persistent,
-	//	CefRefPtr<BrowserCallback>		callback,
-	//	XRPC_INFO &						rpc_info
-	//	);
 
 	// ¹¦ÄÜº¯Êý
 	static bool set_title_areas(

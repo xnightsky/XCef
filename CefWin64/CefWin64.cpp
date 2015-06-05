@@ -21,10 +21,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 		// ×¢²áÊÂ¼þ
 		mng->RigisterCallback(new XWinCallback);
-		{
-			std::string strPath = XCefAppManage::GetModuleCurrentDirectory().ToString() + "..\\..\\resources\\JSHandle.html";
-			XManifestUtil::Instance().LoadUrl(strPath.c_str());
-		}
+// 		{
+// 			std::string strPath = XCefAppManage::GetModuleCurrentDirectory().ToString() + "..\\..\\resources\\JSHandle.html";
+// 			XManifestUtil::Instance().LoadUrl(strPath.c_str());
+// 		}
 // 		XManifestUtil::Instance().LoadHtml(
 //  			CefString("<script type='text/javascript'>alert('111');</script>")
 //  			);

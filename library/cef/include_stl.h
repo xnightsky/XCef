@@ -34,7 +34,7 @@ namespace xstd
 
 		ncount = _vcprintf_s(fmt.c_str(), va);
 		buf.resize(ncount + 1);
-		vsnprintf_s(&buf[0], ncount, _TRUNCATE, fmt.c_str(), va);
+		vsnprintf_s(&buf[0], ncount+1, _TRUNCATE, fmt.c_str(), va);
 
 		return std::string(&buf[0]);
 	}

@@ -66,9 +66,16 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 
 	// Cef 不支持 CoInitializeEx Com多线程
 	XCefAppManagePtr mng = XCefAppManage::Instance();
+	mng->RigisterCallback(new XWinCallback);
+
 	int exit_code = mng->Init(hInstance);
 	if (exit_code >= 0)
 		return exit_code;
+
+	//////////////////////////////////////////////////////////////////////////
+	// 接管消息处理（可选）
+	mng->GetCefSettings().multi_threaded_message_loop = true;
+	//////////////////////////////////////////////////////////////////////////
 
 #ifndef MIXTURE_UI
 	// 独立线程
@@ -84,7 +91,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	WtlInit(GSInstance());
 	class CCefIdleHandler : public CIdleHandler {
 		virtual BOOL OnIdle() {
-			//CefDoMessageLoopWork();
+			CefDoMessageLoopWork();
 			return 0;
 		}
 	}idleCef;
@@ -98,11 +105,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	}
 	wtlMain.ShowWindow(nCmdShow);
 #endif
-	
-	//////////////////////////////////////////////////////////////////////////
-	// 接管消息处理（可选）
-	mng->GetCefSettings().multi_threaded_message_loop = true;
-	//////////////////////////////////////////////////////////////////////////
 
 #ifndef MIXTURE_UI
 	mng->Loop(hInstance);
@@ -111,14 +113,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPTSTR lp
 	::WaitForSingleObject(thr.GetHandle(), INFINITE);
 #else
 	{
-		/*result =*/ glLoop.Run();
-		if (wtlMain.IsWindow())
-		{
-			wtlMain.DestroyWindow();
-		}
-
-		_Module.RemoveMessageLoop();
-		glLoop.RemoveIdleHandler(&idleCef);
+ 		mng->PreLoop(hInstance);
+ 		/*result =*/ glLoop.Run();
+ 		if (wtlMain.IsWindow())
+ 		{
+ 			wtlMain.DestroyWindow();
+ 		}
+ 
+ 		_Module.RemoveMessageLoop();
+ 		glLoop.RemoveIdleHandler(&idleCef);
 	}
 	mng->Shutdown();
 	WtlUnit();

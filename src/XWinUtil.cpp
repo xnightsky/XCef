@@ -100,7 +100,7 @@ namespace XWinUtil
 	{
 		static WCHAR className[MAX_PATH];
 		ZeroMemory(className, MAX_PATH);
-		wsprintf(className, _T("XCEF%X"), processId);
+		wsprintf(className, _T("XCEF%d"), processId);
 		return className;
 	}
 
@@ -108,6 +108,14 @@ namespace XWinUtil
 	{
 		LPCWSTR className = GetMainWindowClassName(processId);
 		return FindWindowW(className, NULL);
+	}
+
+	/*extern*/ LPCWSTR			GetMessageWindowClassName(int processId /*= _getpid()*/)
+	{
+		static WCHAR className[MAX_PATH];
+		ZeroMemory(className, MAX_PATH);
+		wsprintf(className, _T("XCEF_MESSAGE_WINDOW%d"), processId);
+		return className;
 	}
 
 	/*extern*/ void				PostTitilAreas(CefWindowHandle hwnd, int x /*= -1*/, int y /*= -1*/)

@@ -32,7 +32,7 @@ public:
 	inline CefRefPtr<CefV8Context>		GetCC(){ return CefV8Context::GetCurrentContext(); }
 	inline CefRefPtr<CefFrame>			GetCCFrame(){ return GetCC()->GetFrame(); }
 	inline CefRefPtr<CefBrowser>		GetCCBrowser(){ return GetCC()->GetBrowser(); }
-	CefWindowHandle						GetCCWindowHandle();
+	CefWindowHandle						GetCCRootWindowHandle();
 
 
 	// CefV8Handler methods:
@@ -92,6 +92,9 @@ public:
 class XCefCallback
 {
 public:
+	XCefCallback() : acb_handle_(NULL){}
+	virtual ~XCefCallback(){}
+
 	virtual void	Init() = 0;
 
 	virtual void	CBLoad(CefRefPtr<CefV8Value> app, CefRefPtr<CefV8Context> context);

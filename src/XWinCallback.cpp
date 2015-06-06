@@ -4,20 +4,87 @@
 
 
 BEGIN_XV8(XWinCallback)
+	HANDLE_XV8_CB("set_title_areas", XWinCallback::set_title_areas)
+	HANDLE_XV8_CB("close", XWinCallback::close)
+	HANDLE_XV8_CB("quit", XWinCallback::quit)
+
 	HANDLE_XV8_CB("title", XWinCallback::title)
 	HANDLE_XV8_CB("cache_hwnd", XWinCallback::cache_hwnd)
-//	HANDLE_XV8_CB("drag_window", XWinCallback::drag_window)
 	HANDLE_XV8_CB("native_thread_callback", XWinCallback::native_thread_callback)
 
-	HANDLE_XV8_CB("set_title_areas", XWinCallback::set_title_areas)
-
-	
-	
 	FORWARD_XV8_PROTOCOL_APP()
 		HANDLE_XV8_CB_ASYNC("async_title", XWinCallback::async_title)
 		HANDLE_XV8_CB_ASYNC("async_get_hwnd", XWinCallback::async_get_hwnd)
-//		HANDLE_XV8_CB_ASYNC("async_drag_window", XWinCallback::async_drag_window)
 END_XV8()
+
+
+
+/*static*/ bool XWinCallback::set_title_areas(
+XCefV8Handler *				pthis_handle,
+CefRefPtr<CefV8Value>		object,
+const CefV8ValueList &		arguments,
+CefRefPtr<CefV8Value> &		retval,
+CefString &					exception
+)
+{
+
+	CefWindowHandle hwnd = pthis_handle->GetCCRootWindowHandle();
+
+	do
+	{
+		if (NULL == hwnd)
+		{
+			retval = XCefV8Handler::CreateResultValue(false, "Can not get hwnd!");
+			break;
+		}
+		if (arguments.size() < 2){
+			retval = XCefV8Handler::CreateResultValue(false, "Invalid function arguements!");
+			break;
+		}
+		int x = arguments[0]->GetIntValue();
+		int y = arguments[1]->GetIntValue();
+
+		XWinUtil::PostTitilAreas(hwnd, x, y);
+
+		retval = XCefV8Handler::CreateResultValue(true);
+	} while (0);
+	return true;
+}
+/*static*/ bool XWinCallback::close(
+	XCefV8Handler *				pthis_handle,
+	CefRefPtr<CefV8Value>		object,
+	const CefV8ValueList &		arguments,
+	CefRefPtr<CefV8Value> &		retval,
+	CefString &					exception
+	)
+{
+	bool focus_close = false;
+	do
+	{
+		if (arguments.size() < 1 || !arguments[0]->IsBool())
+		{
+			break;
+		}
+		focus_close = arguments[0]->GetBoolValue();
+	} while (0);
+
+	CefString strjs = xstd::format("window.close(%s);", focus_close ? "true" : "false");
+	pthis_handle->GetCCBrowser()->GetMainFrame()->ExecuteJavaScript(strjs, "", 0);
+	retval = XCefV8Handler::CreateResultValue(true);
+	return true;
+}
+/*static*/ bool XWinCallback::quit(
+	XCefV8Handler *				pthis_handle,
+	CefRefPtr<CefV8Value>		object,
+	const CefV8ValueList &		arguments,
+	CefRefPtr<CefV8Value> &		retval,
+	CefString &					exception
+	)
+{
+	XCefAppManage::Instance()->QuitMessageLoopByChildProcess();
+	
+	return true;
+}
 
 
 /*static*/ bool		XWinCallback::title(
@@ -41,7 +108,7 @@ END_XV8()
  		return false;
 	}
 
-	CefWindowHandle hwnd = pthis_handle->GetCCWindowHandle();
+	CefWindowHandle hwnd = pthis_handle->GetCCRootWindowHandle();
 	CefString str_title = arguments[0]->GetStringValue();
 
 	if (NULL == hwnd)
@@ -281,37 +348,5 @@ public:
 	} while (0);
 
 	retval = CefV8Value::CreateBool(true);
-	return true;
-}
-
-/*static*/ bool XWinCallback::set_title_areas(
-	XCefV8Handler *				pthis_handle,
-	CefRefPtr<CefV8Value>		object,
-	const CefV8ValueList &		arguments,
-	CefRefPtr<CefV8Value> &		retval,
-	CefString &					exception
-	)
-{
-
-	CefWindowHandle hwnd = pthis_handle->GetCCWindowHandle();
-
-	do 
-	{
-		if (NULL == hwnd)
-		{
-			retval = XCefV8Handler::CreateResultValue(false, "Can not get hwnd!");
-			break;
-		}
-		if (arguments.size() < 2){
-			retval = XCefV8Handler::CreateResultValue(false, "Invalid function arguements!");
-			break;
-		}
-		int x = arguments[0]->GetIntValue();
-		int y = arguments[1]->GetIntValue();
-
-		XWinUtil::PostTitilAreas(hwnd, x, y);
-
-		retval = XCefV8Handler::CreateResultValue(true);
-	} while (0);
 	return true;
 }

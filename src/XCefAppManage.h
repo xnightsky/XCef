@@ -89,8 +89,9 @@ public:
 	static  CefRefPtr<XCefAppManage>		Instance();
 
 	int		Init(HINSTANCE hInstance, int nCmdShow = SW_SHOW);
-	BOOL	Loop(HINSTANCE hInstance);
+	BOOL	Loop(HINSTANCE hInstance);	
 	void    Shutdown();
+	void    PreLoop(HINSTANCE hInstance);
 	BOOL	PreTranslateMessage(MSG* pMsg);
 
 	// cef
@@ -101,6 +102,7 @@ public:
 	void							InitBrowserSettings(__out CefBrowserSettings & settings);
 	void							CreateBrowser(HWND hwnd_parent);
 	void							QuitMessageLoop();
+	void							QuitMessageLoopByChildProcess();
 	bool							IsOffScreenRenderingEnabled();
 
 
@@ -117,8 +119,6 @@ public:
 	inline void							SetClient(CefRefPtr<ClientHandler> client){ client_ = client; }
 	inline void							SetClientHostHandle(CefWindowHandle hwnd){ client_host_hwnd_ = hwnd; }
 	inline CefWindowHandle				GetClientHostHandle(){ return client_host_hwnd_; }
-// 	inline WNDPROC						GetClientHostProc(){ return client_host_old_proc_; }
-// 	WNDPROC								SetClientHostProc(WNDPROC proc, HWND hwnd = NULL);
 
 public:
 	// »º´æ´°¿Ú¾ä±ú - XWinCallback::async_cache_hwnd ¸³Öµ(ÓÐ´ý·Ï³ý£©

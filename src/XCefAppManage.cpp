@@ -14,49 +14,6 @@
 HINSTANCE	s_hInst = NULL;
 int			s_nCmdShow = 0;
 
-//// ÕÚ¸Ç´°¿Ú
-//HWND		hCover = NULL;
-//BOOL CreateCoverWindow()
-//{
-//	HWND hWnd = NULL;
-//	LPCWSTR szWindowClass = L"ConverWindow";
-//
-//	WNDCLASSEX wcex;
-//	wcex.cbSize = sizeof(WNDCLASSEX);
-//	wcex.style = CS_HREDRAW | CS_VREDRAW;
-//	wcex.lpfnWndProc = WndProc;
-//	wcex.cbClsExtra = 0;
-//	wcex.cbWndExtra = 0;
-//	wcex.hInstance = s_hInst;
-//	wcex.hIcon = LoadIcon(s_hInst, MAKEINTRESOURCE(IDI_CEFCLIENT));
-//	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-//	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-//	//wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_TIERTIME);
-//	wcex.lpszMenuName = NULL;
-//	wcex.lpszClassName = szWindowClass;
-//	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-//	if (!RegisterClassEx(&wcex))
-//		return FALSE;
-//
-//	// ·ÀÖ¹ÖØÈëWM_CREATE
-//	XCefAppManage::Instance()->SetClientHostHandle((HWND)-1);
-//	hWnd = CreateWindow(
-//		szWindowClass,
-//		_T("YE!HOST"),
-//		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-//		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0,
-//		NULL, NULL, wcex.hInstance, NULL
-//		);
-//	if (!hWnd)
-//	{
-//		return FALSE;
-//	}
-//	XCefAppManage::Instance()->SetClientHostHandle(hWnd);
-//
-//	ShowWindow(hWnd, s_nCmdShow);
-//	UpdateWindow(hWnd);
-//	return TRUE;
-//}
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -182,7 +139,6 @@ int XCefAppManage::Init(HINSTANCE hInstance, int nCmdShow /*= SW_SHOW*/)
 	InitCommandLine(0, NULL);
 
 	//CefSettings settings;
-	//CefSettingsTraits::init(&settings);
 #if !defined(CEF_USE_SANDBOX)
 	settings_.no_sandbox = true;
 #endif
@@ -207,6 +163,9 @@ LRESULT CALLBACK MessageWndProc(HWND hWnd, UINT message, WPARAM wParam,
 	case WM_COMMAND: {
 		int wmId = LOWORD(wParam);
 		switch (wmId) {
+		case XWM_QUIT_APP:
+			XCefAppManage::Instance()->GetClient()->CloseAllBrowsers(true);
+			break;
 		case ID_QUIT:
 			PostQuitMessage(0);
 			return 0;
@@ -216,7 +175,8 @@ LRESULT CALLBACK MessageWndProc(HWND hWnd, UINT message, WPARAM wParam,
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 HWND CreateMessageWindow(HINSTANCE hInstance) {
-	static const wchar_t kWndClass[] = L"ClientMessageWindow";
+	//static const wchar_t kWndClass[] = L"ClientMessageWindow";
+	const wchar_t * kWndClass = XWinUtil::GetMessageWindowClassName();
 
 	WNDCLASSEX wc = { 0 };
 	wc.cbSize = sizeof(wc);
@@ -226,7 +186,7 @@ HWND CreateMessageWindow(HINSTANCE hInstance) {
 	RegisterClassEx(&wc);
 
 	//return CreateWindow(kWndClass, 0, 0, 0, 0, 0, 0, HWND_MESSAGE, 0, hInstance, 0);
-	return CreateWindowEx(0, kWndClass, L"XCEF_HWND_MESSAGE", 0, 0, 0, 0, 0, HWND_MESSAGE, NULL, NULL, NULL);
+	return CreateWindowEx(0, kWndClass, L"XCEF_MESSAGE_WINDOW", 0, 0, 0, 0, 0, HWND_MESSAGE, NULL, NULL, NULL);
 }
 static BOOL IsIdleMessage(MSG* pMsg)
 {
@@ -260,15 +220,39 @@ BOOL	XCefAppManage::Loop(HINSTANCE hInstance)
 
 		//HACCEL hAccelTable = NULL;		// !!!!!!!!!!!!!
 
-		while (GetMessage(&msg, NULL, 0, 0))
+// 		while (GetMessage(&msg, NULL, 0, 0))
+// 		{
+// 			if (!PreTranslateMessage(&msg))
+// 			{
+// 				//if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+// 				TranslateMessage(&msg);
+// 				DispatchMessage(&msg);
+// 			}
+// 		}
+
+		while (true)
 		{
-			if (!PreTranslateMessage(&msg))
+			if (IsIdleMessage(&msg) && !::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE))
 			{
-				//if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
+				CefDoMessageLoopWork();
+				continue;
+			}
+
+			if (GetMessage(&msg, NULL, 0, 0))
+			{
+				if (!PreTranslateMessage(&msg))
+				{
+					//if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+					TranslateMessage(&msg);
+					DispatchMessage(&msg);
+				}
+			}
+			else
+			{
+				break;
 			}
 		}
+
 
 		DestroyWindow(message_wnd__);
 		message_wnd__ = NULL;
@@ -284,6 +268,16 @@ void XCefAppManage::Shutdown()
 	CefShutdown();
 	app_ = NULL;
 	ClearCallback();
+}
+
+void    XCefAppManage::PreLoop(HINSTANCE hInstance)
+{
+	if (settings_.multi_threaded_message_loop)
+	{
+		// Create a hidden window for message processing.
+		message_wnd__ = CreateMessageWindow(hInstance);
+		DCHECK(message_wnd__);
+	}
 }
 
 BOOL	XCefAppManage::PreTranslateMessage(MSG* pMsg)
@@ -513,17 +507,37 @@ void							XCefAppManage::CreateBrowser(HWND hwnd_parent)
 }
 
 
-void XCefAppManage::QuitMessageLoop() {
+void						XCefAppManage::QuitMessageLoop() {
 	if (GetCefSettings().multi_threaded_message_loop)
 	{
 		// Running in multi-threaded message loop mode. Need to execute
 		// PostQuitMessage on the main application thread.
+		if (NULL == message_wnd__)
+		{
+			message_wnd__ = ::FindWindow(XWinUtil::GetMessageWindowClassName(XWinUtil::GetParentProcessID()), NULL);
+		}
 		DCHECK(message_wnd__);
 		PostMessage(message_wnd__, WM_COMMAND, ID_QUIT, 0);
 	}
 	else {
 		CefQuitMessageLoop();
 	}
+}
+void							XCefAppManage::QuitMessageLoopByChildProcess()
+{
+	DWORD ppid = XWinUtil::GetParentProcessID();
+	CefWindowHandle hmsg = ::FindWindow(XWinUtil::GetMessageWindowClassName(ppid), NULL);
+	if (NULL != hmsg)
+	{
+		PostMessage(hmsg, WM_COMMAND, XWM_QUIT_APP, 0);
+		return;
+	}
+	if (NULL == hmsg)
+	{
+		hmsg = ::FindWindow(XWinUtil::GetMainWindowClassName(ppid), NULL);
+	}
+	DCHECK(hmsg);
+	PostMessage(hmsg, XWM_QUIT_APP, 0, 0);
 }
 
 bool							XCefAppManage::IsOffScreenRenderingEnabled()
@@ -611,6 +625,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				mng->SetClientHostHandle(hWnd);
 			}
 			return 0;
+		case XWM_QUIT_APP:
+			if (client){
+				client->CloseAllBrowsers(true);
+			}
+			break;
 		case WM_CLOSE:
 			if (client && !client->IsClosing()) {
 				CefRefPtr<CefBrowser> browser = client->GetBrowser();
@@ -706,7 +725,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				CefWindowHandle hwnd = client->GetBrowser()->GetHost()->GetWindowHandle();
 				XWinHookHandle::SetHook(hwnd, wParam, lParam);
 			}
-
 			return 0;
 		}
 	} while (0);

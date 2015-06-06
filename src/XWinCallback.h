@@ -9,6 +9,31 @@ class XWinCallback : public XCefCallback
 public:
 	// callback methods
 
+	// 功能函数
+	// 设置拖动区域
+	static bool set_title_areas(
+		XCefV8Handler *				pthis_handle,
+		CefRefPtr<CefV8Value>		object,
+		const CefV8ValueList &		arguments,
+		CefRefPtr<CefV8Value> &		retval,
+		CefString &					exception
+		);
+	static bool close(
+		XCefV8Handler *				pthis_handle,
+		CefRefPtr<CefV8Value>		object,
+		const CefV8ValueList &		arguments,
+		CefRefPtr<CefV8Value> &		retval,
+		CefString &					exception
+		);
+	static bool quit(
+		XCefV8Handler *				pthis_handle,
+		CefRefPtr<CefV8Value>		object,
+		const CefV8ValueList &		arguments,
+		CefRefPtr<CefV8Value> &		retval,
+		CefString &					exception
+		);
+
+
 	// 测试函数
 	static bool		title(
 		XCefV8Handler *				pthis_handle,
@@ -48,15 +73,6 @@ public:
 		);
 
 	static bool   cache_hwnd(
-		XCefV8Handler *				pthis_handle,
-		CefRefPtr<CefV8Value>		object,
-		const CefV8ValueList &		arguments,
-		CefRefPtr<CefV8Value> &		retval,
-		CefString &					exception
-		);
-
-	// 功能函数
-	static bool set_title_areas(
 		XCefV8Handler *				pthis_handle,
 		CefRefPtr<CefV8Value>		object,
 		const CefV8ValueList &		arguments,

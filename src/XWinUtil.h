@@ -4,7 +4,8 @@
 
 enum
 {
-	XWM_SET_TITTLE_AREAS = WM_USER + 1
+	XWM_SET_TITTLE_AREAS	=	WM_USER + 1,
+	XWM_QUIT_APP
 };
 
 namespace XWinUtil
@@ -32,6 +33,7 @@ namespace XWinUtil
 
 	extern LPCWSTR			GetMainWindowClassName(int processId = _getpid());
 	extern CefWindowHandle	GetMainWindowHwnd(int processId = _getpid());
+	extern LPCWSTR			GetMessageWindowClassName(int processId = _getpid());
 
 	extern void				PostTitilAreas(CefWindowHandle hwnd, int x = -1, int y = -1);
 	extern void				SetTitleAreas(WPARAM wParam, LPARAM lParam, __out WinInfo & info);

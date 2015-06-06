@@ -6,12 +6,13 @@
 XCefV8Handler::XCefV8Handler() : cache_hwnd_(NULL){}
 /*virtual*/ XCefV8Handler::~XCefV8Handler(){ cache_hwnd_ = NULL; }
 
-CefWindowHandle				XCefV8Handler::GetCCWindowHandle()
+CefWindowHandle				XCefV8Handler::GetCCRootWindowHandle()
 {
 	CefWindowHandle hwnd = NULL;
 	if (!CefCurrentlyOn(TID_RENDERER))
 	{
 		hwnd = GetCCBrowser()->GetHost()->GetWindowHandle();
+		hwnd = GetAncestor(hwnd, GA_ROOT);
 	}
 	else if (XCefAppManage::Instance())
 	{

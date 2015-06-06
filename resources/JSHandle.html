@@ -10,6 +10,14 @@
 	margin: 0;
 	padding: 0;
 }
+button{
+	padding: 5px;
+	margin: 5px 0px;
+	background: linear-gradient(#ffffff, #cccccc);
+	border: 1px solid #bbbbbb;
+	border-radius: 5px;
+}
+
 #container {
 background-color: #333;
 color: #fff;
@@ -27,6 +35,53 @@ z-index: 10;
 	//background: transparent;
 	padding: 0px 20px 0px 20px;
 }
+
+.close {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+}
+.close:hover::before, .close:hover::after {
+  background: #1ebcc5;
+}
+.close::before, .close::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #FFF;
+}
+.close::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.rclose{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.rbquit{
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -99,50 +154,50 @@ function check_cefQuery(){
 			: "<font color=\"red\">window.cefQuery 未加载</font>"
 }
 
-function drap_caption(ocaption)
-{
-	ocaption.is_drap = false;
+// function drap_caption(ocaption)
+// {
+// 	ocaption.is_drap = false;
 
-	ocaption.onmousedown = function(event)
-	{
-		if(ocaption.setCapture){
-			ocaption.setCapture();
-		}else if(window.captureEvents){
-			window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
-		}
-		ocaption.onmouseup = function (event){
-			//取消捕获范围
-			if(ocaption.releaseCapture){
-				ocaption.releaseCapture();
-			}else if(window.captureEvents){
-				window.captureEvents(Event.MOUSEMOVE|Event.MOUSEUP);
-			}
-			//清除事件
-			ocaption.onmousemove=null;
-			ocaption.onmouseup=null;
+// 	ocaption.onmousedown = function(event)
+// 	{
+// 		if(ocaption.setCapture){
+// 			ocaption.setCapture();
+// 		}else if(window.captureEvents){
+// 			window.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);
+// 		}
+// 		ocaption.onmouseup = function (event){
+// 			//取消捕获范围
+// 			if(ocaption.releaseCapture){
+// 				ocaption.releaseCapture();
+// 			}else if(window.captureEvents){
+// 				window.captureEvents(Event.MOUSEMOVE|Event.MOUSEUP);
+// 			}
+// 			//清除事件
+// 			ocaption.onmousemove=null;
+// 			ocaption.onmouseup=null;
 
-			if(app && app.drag_window)
-				app.drag_window(-1, -1);
-	      console.log("stopmove_window()");
-		}
-		ocaption.onmousemove = function (event){
-			var x=event.clientX;
-			var y=event.clientY;
-			if(app && app.drag_window)
-				app.drag_window(x, y);
-			console.log("move_window("+x+","+y+")");
-		}
-		ocaption.onmouseleave = ocaption.onmouseup;
+// 			if(app && app.drag_window)
+// 				app.drag_window(-1, -1);
+// 	      console.log("stopmove_window()");
+// 		}
+// 		ocaption.onmousemove = function (event){
+// 			var x=event.clientX;
+// 			var y=event.clientY;
+// 			if(app && app.drag_window)
+// 				app.drag_window(x, y);
+// 			console.log("move_window("+x+","+y+")");
+// 		}
+// 		ocaption.onmouseleave = ocaption.onmouseup;
 	
-		var x=event.clientX;
-		var y=event.clientY;
+// 		var x=event.clientX;
+// 		var y=event.clientY;
 
-		//jsonrpcQuery("async_drag_window", null)
-		if(app && app.drag_window)
-			app.drag_window(x, y);
-		console.log("drag_window("+x+","+y+")");
-	}
-}
+// 		//jsonrpcQuery("async_drag_window", null)
+// 		if(app && app.drag_window)
+// 			app.drag_window(x, y);
+// 		console.log("drag_window("+x+","+y+")");
+// 	}
+// }
 
 function init(){
 	check_cefQuery();
@@ -174,12 +229,17 @@ function init(){
 	})();
 
 	//drap_caption(document.getElementById("container"));
+
+	window.open('http://www.baidu.com');window.open('http://cn.bing.com');
 }
 
 </script>
 </head>
 <body onload="init()">
-	<div id="container" >&nbsp;</div>
+	<button class="rbquit" onclick="app.quit()">&nbsp;&nbsp;退出&nbsp;&nbsp;</button>
+	<div id="container" >&nbsp;
+		<span class="close rclose" onclick="app.close()"></span>
+	</div>
 	<div id="body">
 		<br/>
 		<br/>
@@ -370,7 +430,6 @@ function init(){
 			}
 		</script>
 	</div>
-
-
+	<!-- <iframe src=".\JSHandle.html" style="width:100%; height:80px;"></iframe> -->
 </body>
 </html>

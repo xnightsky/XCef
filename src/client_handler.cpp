@@ -925,6 +925,9 @@ void ClientHandler::CreateMessageHandlers(MessageHandlerSet& handlers) {
 
   //// Create the window test handlers.
   //window_test::CreateMessageHandlers(handlers);
+
+
+	XCefAppManage::Instance()->AnsycCallbackLoad(handlers);
 }
 
 void ClientHandler::BuildTestMenu(CefRefPtr<CefMenuModel> model) {

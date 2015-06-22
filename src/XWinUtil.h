@@ -152,15 +152,6 @@ struct XWinHookHandle
 
 	static HWND GetTop(HWND hwnd)
 	{
-// 		HWND hwnd_top = NULL;
-// 		for (HWND it = hwnd; it;)
-// 		{
-// 			hwnd_top = it;
-// 			it = GetParent(hwnd);
-// 			if (it == hwnd_top)
-// 				break;
-// 		}
-// 		return hwnd_top;
 		return ::GetAncestor(hwnd, GA_ROOT);
 	}
 

@@ -21,17 +21,17 @@ function jsonrpcQuery(method, params, cb_success, cb_failure, persistent, rpc_id
 
 	// 实现部分 jsonrpc 2.0 功能
 	var jsonrpc = {
-		"jsonrpc": 	"2.0", 
-		"protocol": protocol,
-		"method": 	method, 
-		"params": 	params, 
-		"id": 		rpc_id
+		"jsonrpc": 	 "2.0", 
+		"protocol":  protocol,
+		"method": 	 method, 
+		"params": 	 params, 
+		"id": 		 rpc_id
 		};
 	var str_jsonrpc = JSON.stringify(jsonrpc);
 	//alert(str_jsonrpc);	return;
 	var request_message = {
 		request: str_jsonrpc,
-		persistent: false,
+		persistent: false //,
 		//onSuccess: function(response) {},
 		//onFailure: function(error_code, error_message) {}
 	}

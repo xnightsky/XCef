@@ -47,7 +47,8 @@ enum client_menu_ids {
   CLIENT_ID_TESTMENU_RADIOITEM2,
   CLIENT_ID_TESTMENU_RADIOITEM3,
   //
-  CLIENT_ID_RELOAD
+  CLIENT_ID_RELOAD,
+  CLIENT_ID_QUIT
 };
 
 const char kTestOrigin[] = "http://tests/";
@@ -175,6 +176,12 @@ void ClientHandler::OnBeforeContextMenu(
 
 	model->AddSeparator();
 	model->AddItem(CLIENT_ID_RELOAD, "&Reload");
+	model->AddSeparator();
+	model->AddSeparator();
+	model->AddSeparator();
+	model->AddSeparator();
+	model->AddSeparator();
+	model->AddItem(CLIENT_ID_QUIT, "&Quit");
   }
 }
 
@@ -204,6 +211,9 @@ bool ClientHandler::OnContextMenuCommand(
       return true;
 	case CLIENT_ID_RELOAD:
 		RefreshPage(browser, true);
+		return true;
+	case CLIENT_ID_QUIT:
+		XCefAppManage::Instance()->QuitMessageLoopByMainProcess();
 		return true;
     default:  // Allow default handling, if any.
       return ExecuteTestMenu(command_id);

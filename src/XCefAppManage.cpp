@@ -523,9 +523,10 @@ void						XCefAppManage::QuitMessageLoop() {
 		CefQuitMessageLoop();
 	}
 }
-void							XCefAppManage::QuitMessageLoopByChildProcess()
+
+
+static void						QuitMessageLoopByProcessId(DWORD ppid)
 {
-	DWORD ppid = XWinUtil::GetParentProcessID();
 	CefWindowHandle hmsg = ::FindWindow(XWinUtil::GetMessageWindowClassName(ppid), NULL);
 	if (NULL != hmsg)
 	{
@@ -538,6 +539,18 @@ void							XCefAppManage::QuitMessageLoopByChildProcess()
 	}
 	DCHECK(hmsg);
 	PostMessage(hmsg, XWM_QUIT_APP, 0, 0);
+}
+
+void							XCefAppManage::QuitMessageLoopByMainProcess()
+{
+	DWORD ppid = GetCurrentProcessId();
+	QuitMessageLoopByProcessId(ppid);
+}
+
+void							XCefAppManage::QuitMessageLoopByChildProcess()
+{
+	DWORD ppid = XWinUtil::GetParentProcessID();
+	QuitMessageLoopByProcessId(ppid);
 }
 
 bool							XCefAppManage::IsOffScreenRenderingEnabled()

@@ -102,6 +102,7 @@ public:
 	void							InitBrowserSettings(__out CefBrowserSettings & settings);
 	void							CreateBrowser(HWND hwnd_parent);
 	void							QuitMessageLoop();
+	void							QuitMessageLoopByMainProcess();
 	void							QuitMessageLoopByChildProcess();
 	bool							IsOffScreenRenderingEnabled();
 
